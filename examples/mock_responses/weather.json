@@ -1,0 +1,12 @@
+[
+  {
+    "temperature": 72,
+    "condition": "sunny",
+    "humidity": 45
+  },
+  {
+    "temperature": 55,
+    "condition": "cloudy",
+    "humidity": 80
+  }
+]

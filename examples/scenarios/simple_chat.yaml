@@ -1,0 +1,21 @@
+name: simple_chat
+description: "Agent responds appropriately to a greeting"
+tags: [basic, no-tools]
+
+agent:
+  model: qwen2.5:7b-instruct
+  system_prompt: "You are a helpful, friendly assistant."
+  temperature: 0.1
+  seed: 42
+
+steps:
+  - user_message: "Hello! How are you?"
+    expectations:
+      - type: response_contains
+        values: ["hello", "hi", "hey", "greet"]
+      - type: response_not_contains
+        value: "error"
+      - type: latency_under
+        max_ms: 30000
+
+runs: 3

@@ -1,0 +1,35 @@
+name: weather_agent
+description: "Agent looks up weather information"
+tags: [tools, weather]
+
+agent:
+  model: qwen2.5:7b-instruct
+  system_prompt_file: ../prompts/weather.txt
+  temperature: 0.1
+  seed: 42
+  tools:
+    - name: get_weather
+      description: "Get current weather for a location"
+      parameters:
+        type: object
+        properties:
+          location:
+            type: string
+            description: "City name"
+        required: [location]
+      mock_response_file: ../mock_responses/weather.json
+
+steps:
+  - user_message: "What's the weather in San Francisco?"
+    expectations:
+      - type: tool_called
+        tool: get_weather
+      - type: tool_args_contain
+        tool: get_weather
+        args_contain:
+          location: "San Francisco"
+      - type: no_tool_errors
+      - type: latency_under
+        max_ms: 30000
+
+runs: 3

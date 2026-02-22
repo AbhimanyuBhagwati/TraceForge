@@ -1,0 +1,53 @@
+name: multi_step_math
+description: "Multi-step math - step 3 expects impossible value to test minrepro"
+tags: [tools, math, multi-step]
+
+agent:
+  model: qwen2.5:7b-instruct
+  system_prompt: "You are a math assistant. Use the calculate tool for all math. Be concise."
+  temperature: 0.1
+  seed: 42
+  tools:
+    - name: calculate
+      description: "Perform a mathematical calculation"
+      parameters:
+        type: object
+        properties:
+          expression:
+            type: string
+            description: "Math expression to evaluate"
+        required: [expression]
+      mock_responses:
+        - result: 10
+        - result: 20
+        - result: 999
+        - result: 50
+
+steps:
+  - user_message: "What is 5 + 5?"
+    expectations:
+      - type: tool_called
+        tool: calculate
+      - type: response_contains
+        values: ["10"]
+
+  - user_message: "Now double that result"
+    expectations:
+      - type: tool_called
+        tool: calculate
+      - type: response_contains
+        values: ["20"]
+
+  - user_message: "Add 7 to the previous result"
+    expectations:
+      - type: response_contains
+        values: ["XYZZY_IMPOSSIBLE_VALUE"]
+
+  - user_message: "What is 25 * 2?"
+    expectations:
+      - type: tool_called
+        tool: calculate
+      - type: response_contains
+        values: ["50"]
+
+runs: 1

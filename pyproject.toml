@@ -1,0 +1,51 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "traceforge"
+version = "0.2.0"
+description = "Test harness for AI agents that call tools. Record, replay, fuzz, and debug."
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.12"
+authors = [{name = "Abhimanyu Bhagwati", email = "abhimanyu@vt.edu"}]
+keywords = ["ai", "agents", "testing", "llm", "ollama", "evaluation", "fuzzing", "replay", "debugging"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Topic :: Software Development :: Testing",
+    "Topic :: Software Development :: Debuggers",
+]
+
+[project.urls]
+Homepage = "https://github.com/AbhimanyuBhagwati/TraceForge"
+Repository = "https://github.com/AbhimanyuBhagwati/TraceForge"
+Issues = "https://github.com/AbhimanyuBhagwati/TraceForge/issues"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.23",
+    "pytest-cov>=4.0",
+]
+
+dependencies = [
+    "click>=8.0",
+    "ollama>=0.1.6",
+    "pydantic>=2.0",
+    "pyyaml>=6.0",
+    "rich>=13.0",
+    "jinja2>=3.0",
+]
+
+[project.scripts]
+traceforge = "traceforge.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

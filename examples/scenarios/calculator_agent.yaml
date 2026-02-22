@@ -1,0 +1,33 @@
+name: calculator_agent
+description: "Agent correctly uses calculator tool for math questions"
+tags: [tools, math, basic]
+
+agent:
+  model: qwen2.5:7b-instruct
+  system_prompt_file: ../prompts/calculator.txt
+  temperature: 0.1
+  seed: 42
+  tools:
+    - name: calculate
+      description: "Perform a mathematical calculation"
+      parameters:
+        type: object
+        properties:
+          expression:
+            type: string
+            description: "Math expression to evaluate"
+        required: [expression]
+      mock_response_file: ../mock_responses/calculator.json
+
+steps:
+  - user_message: "What is 6 times 7?"
+    expectations:
+      - type: tool_called
+        tool: calculate
+      - type: response_contains
+        values: ["42"]
+      - type: latency_under
+        max_ms: 30000
+      - type: no_tool_errors
+
+runs: 3
